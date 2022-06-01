@@ -8,16 +8,19 @@ namespace ChristmasRandomizerV2.Core
     public class MappingManager
     {
         private ILogger _logger;
+        private int _maxIterations;
 
-        public MappingManager(ILogger logger)
+        public MappingManager(
+            ILogger logger,
+            int maxIterations = 20)
         {
             this._logger = logger;
+            this._maxIterations = maxIterations;
         }
 
         public Mapping Generate(
             ISet<Person> people,
-            Restrictions restrictions,
-            int retryLimit = 20)
+            Restrictions restrictions)
         {
             Mapping result = null;
             int attempt = 0;
@@ -38,7 +41,7 @@ namespace ChristmasRandomizerV2.Core
 
             bool success = false;
 
-            while (!success && attempt < retryLimit)
+            while (!success && attempt < this._maxIterations)
             {
                 result = new Mapping();
 
@@ -94,7 +97,7 @@ namespace ChristmasRandomizerV2.Core
                 }
                 else
                 {
-                    this._logger.Log($"Unsuccessful attempt on try [{attempt + 1}]/[{retryLimit}]");
+                    this._logger.Log($"Unsuccessful attempt on try [{attempt + 1}]/[{this._maxIterations}]");
                     result = null;
                 }
 

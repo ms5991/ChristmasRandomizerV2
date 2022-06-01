@@ -1,0 +1,38 @@
+{
+    "names" : [
+        {
+            "name" : "Mom",
+            "email" : "mom@gmail.com"
+        },
+        {
+            "name" : "Dad",
+            "email" : "dad@gmail.com"
+        },
+        {
+            "name" : "Brother",
+            "email" : "brother@gmail.com"
+        },
+        {
+            "name" : "Sister",
+            "email" : "sister@gmail.com"
+        },
+        {
+            "name" : "Grandma",
+            "email" : "grandma@gmail.com"
+        }
+    ],
+    "restrictions":[
+        {
+            "person":"Dad",
+            "cannotHave":"Grandma"
+        },
+        {
+            "person":"Grandma",
+            "cannotHave":"Brother"
+        }
+    ],
+    "email" : {
+        "username":"sendingaddress@gmail.com",
+        "password":"superSecretEmailPassword"
+    }
+}

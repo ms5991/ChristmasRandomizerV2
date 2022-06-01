@@ -11,36 +11,107 @@ namespace ChristmasRandomizerV2.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            bool notify = false;
-            if (args.Length == 1)
+            Program program = new Program(args);
+
+            program.Execute();
+        }
+
+        /// <summary>
+        /// Whether to send an email
+        /// </summary>
+        private bool _notify = false;
+        
+        /// <summary>
+        /// Whether to log results to the logger
+        /// </summary>
+        private bool _log = false;
+
+        /// <summary>
+        /// Max number of retries before quitting
+        /// </summary>
+        private int _maxIterations = 20;
+
+        internal Program(string[] args)
+        {
+            this.ParseArgs(args);
+        }
+
+        /// <summary>
+        /// Parses command line args
+        /// </summary>
+        /// <param name="args"></param>
+        /// <exception cref="ArgumentException"></exception>
+        private void ParseArgs(string[] args)
+        {
+            if (args.Length < 1)
             {
-                notify = string.Equals("notify", args[0], StringComparison.OrdinalIgnoreCase);
+                throw new ArgumentException($"Invalid number of args, need at least one");
             }
 
-            ConfigLoader loader = new ConfigLoader(
-                configFilePath: @"C:\Users\ms599\OneDrive\Documents\Home and Life\Christmas\V2\config.json",
-                lastYearsMappingFilePath: @"C:\Users\ms599\OneDrive\Documents\Home and Life\Christmas\V2\2021.json");
-
-            Mapping result = new MappingManager(new Logger()).Generate(loader.People, loader.Restrictions);
-
-            if (result == null)
+            if (args[0].Equals("notify", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine("Unable to build mapping");
+                this._notify = true;
+                this._log = false;
+            }
+            else if (args[0].Equals("log", StringComparison.OrdinalIgnoreCase))
+            {
+                this._notify = false;
+                this._log = true;
             }
             else
             {
-                if (notify)
+                throw new ArgumentException($"Argument should be either [notify] or [log]");
+            }
+
+            if (args.Length > 1)
+            {
+                foreach (string option in args)
                 {
-                    result.Notify(loader);
-                }
-                else
-                {
-                    foreach (var m in result)
+                    switch (option)
                     {
-                        Console.WriteLine($"[{m.Key.Name}] -> [{m.Value.Name}]");
+                        case "-l":
+                        case "-L":
+                            this._log = true;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Executes the cmdline app
+        /// </summary>
+        /// <exception cref="Exception"></exception>
+        public void Execute()
+        {
+            ILogger logger = new Logger(this._log);
+
+            ConfigLoader loader = new ConfigLoader(
+                configFilePath: @"",
+                lastYearsMappingFilePath: @"");
+
+            Mapping result = new MappingManager(logger, this._maxIterations).Generate(loader.People, loader.Restrictions);
+
+            if (result == null)
+            {
+                logger.Log("Unable to build mapping");
+                throw new Exception($"Unable to build mapping with given parameters");
+            }
+
+            if (this._notify)
+            {
+                result.Notify(loader);
+            }
+                
+            if (this._log)
+            {
+                foreach (var m in result)
+                {
+                    logger.Log($"[{m.Key.Name}] -> [{m.Value.Name}]");
+                }
+            }            
         }
 
     }

@@ -1,8 +1,7 @@
 {
   "profiles": {
     "ChristmasRandomizerV2.ConsoleApp": {
-      "commandName": "Project",
-      "commandLineArgs": "notify"
+      "commandName": "Project"
     }
   }
 }

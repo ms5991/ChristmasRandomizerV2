@@ -1,0 +1,24 @@
+{
+    "mapping": [
+        {
+            "person": "Brother",
+            "has": "Sister"
+        },
+        {
+            "person": "Sister",
+            "has": "Mom"
+        },
+        {
+            "person": "Mom",
+            "has": "Dad"
+        },
+        {
+            "person": "Dad",
+            "has": "Grandma"
+        },
+        {
+            "person": "Grandma",
+            "has": "Brother"
+        }
+    ]
+}
