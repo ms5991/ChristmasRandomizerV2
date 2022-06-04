@@ -39,6 +39,12 @@ namespace ChristmasRandomizerV2.Core.Serialization
 
         [JsonProperty(PropertyName = "password")]
         public string Password { get; set; }
+
+        [JsonProperty(PropertyName = "smtpServer")]
+        public string SmtpServer { get; set; }
+
+        [JsonProperty(PropertyName = "port")]
+        public int Port { get; set; }
     }
 
     internal class Config

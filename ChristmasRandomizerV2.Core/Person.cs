@@ -5,16 +5,9 @@ namespace ChristmasRandomizerV2.Core
 {
     public class Person
     {
-        [JsonProperty()]
         public string Name { get; set; }
 
-        [JsonProperty()]
         public string EmailAddress { get; set; }
-
-        public Person()
-        {
-
-        }
 
         public Person(string name, string emailAddress)
         {

@@ -33,6 +33,8 @@
     ],
     "email" : {
         "username":"sendingaddress@gmail.com",
-        "password":"superSecretEmailPassword"
+        "password": "superSecretEmailPassword",
+        "smtpServer": "smtp.gmail.com",
+        "port": 587
     }
 }

@@ -94,7 +94,7 @@ namespace ChristmasRandomizerV2.ConsoleApp
 
             Mapping result = new MappingManager(logger, this._maxIterations).Generate(loader.People, loader.Restrictions);
 
-            if (result == null)
+            if (result.NumMappings == 0)
             {
                 logger.Log("Unable to build mapping");
                 throw new Exception($"Unable to build mapping with given parameters");
@@ -104,15 +104,14 @@ namespace ChristmasRandomizerV2.ConsoleApp
             {
                 result.Notify(loader);
             }
-                
+
             if (this._log)
             {
                 foreach (var m in result)
                 {
                     logger.Log($"[{m.Key.Name}] -> [{m.Value.Name}]");
                 }
-            }            
+            }
         }
-
     }
 }

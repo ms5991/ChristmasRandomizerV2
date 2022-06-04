@@ -9,22 +9,40 @@ namespace ChristmasRandomizerV2.Core.Serialization
 {
     public class ConfigLoader
     {
+        /// <summary>
+        /// Mapping used last year
+        /// </summary>
         private Mapping LastYearMapping { get; set; }
 
+        /// <summary>
+        /// Restrictions loaded from file
+        /// </summary>
         public Restrictions Restrictions { get; private set; }
 
+        /// <summary>
+        /// List of people loaded from file
+        /// </summary>
         public ISet<Person> People { get; private set; }
 
+        /// <summary>
+        /// Config for sending email loaded from file
+        /// </summary>
         internal ConfigEmail EmailConfig { get; private set; }
 
+        /// <summary>
+        /// Map of string name to Person object
+        /// </summary>
         private Dictionary<string, Person> _nameMapping;
 
         public ConfigLoader(
             string configFilePath, 
             string lastYearsMappingFilePath)
         {
+            // first load the config file
             this.LoadConfigFile(configFilePath);
 
+            // Load last year's mapping and add restrictions
+            // if necessary
             if (!string.IsNullOrEmpty(lastYearsMappingFilePath))
             {
                 this.LoadLastYearConfig(lastYearsMappingFilePath);
@@ -32,8 +50,14 @@ namespace ChristmasRandomizerV2.Core.Serialization
             }
         }
 
+        /// <summary>
+        /// Loads the config file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         private void LoadConfigFile(string filePath)
         {
+            // deserialize the config file
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(filePath));
 
             this.EmailConfig = config.Email;
@@ -60,6 +84,10 @@ namespace ChristmasRandomizerV2.Core.Serialization
             }
         }
 
+        /// <summary>
+        /// Load last year's config file.
+        /// </summary>
+        /// <param name="lastYearConfigFilePath"></param>
         private void LoadLastYearConfig(string lastYearConfigFilePath)
         {
             ConfigMapping lastYear = JsonConvert.DeserializeObject<ConfigMapping>(File.ReadAllText(lastYearConfigFilePath));

@@ -17,24 +17,38 @@ namespace ChristmasRandomizerV2.Core.Email
 
         private bool disposedValue;
 
-        public EmailManager(string fromAddress, string password)
+        public EmailManager(
+            string fromAddress,
+            string password,
+            string smtpServer,
+            int port)
         {
             this._fromAddress = fromAddress;
 
-            this._smtpClient = new SmtpClient("smtp.gmail.com")
+            this._smtpClient = new SmtpClient(smtpServer)
             {
-                Port = 587,
+                Port = port,
                 Credentials = new NetworkCredential(this._fromAddress, password),
                 EnableSsl = true,
             };
         }
 
+        /// <summary>
+        /// Send email to the toNotify Person
+        /// indicating that they have been assigned
+        /// the has Person
+        /// </summary>
+        /// <param name="toNotify"></param>
+        /// <param name="has"></param>
         public void Notify(Person toNotify, Person has)
         {
+            // format the subject line for the email
             string subject = string.Format(SUBJECTFORMAT, DateTime.UtcNow.Year);
 
+            // format the body of the email
             string body = string.Format(BODYFORMAT, toNotify.Name, has.Name);
 
+            // send the email
             this._smtpClient.Send(this._fromAddress, toNotify.EmailAddress, subject, body);
         }
 
